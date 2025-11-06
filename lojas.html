@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Lojas & Cobertura | Vodacom Moçambique - Encontre a loja mais próxima e verifique a cobertura 4G/5G." />
+  <meta name="theme-color" content="#FF0000" />
+  <meta name="robots" content="index, follow" />
+  <title>Lojas & Cobertura | Vodacom Moçambique</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozrqhhbzwUNVvSBO7D26go0uVnv5znUXBGCdMfw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <!-- ======================================== -->
+  <!-- 1. HEADER (Menu Superior - Completo)     -->
+  <!-- ======================================== -->
+  <header class="header" role="banner">
+    <div class="container">
+      <!-- Logo (Local + Fallback para Visibilidade) -->
+      <a href="index.html" class="logo" aria-label="Página inicial da Vodacom">
+        <img src="assets/images/logo-vodacom.svg" alt="Logo Vodacom Moçambique" loading="lazy"
+             onerror="this.src='https://www.vm.co.mz/wp-content/themes/vodacom/assets/img/logo-vodacom.svg'; this.onerror=null;">
+      </a>
+
+      <!-- Navegação Principal -->
+      <nav class="nav" role="navigation" aria-label="Menu principal">
+        <!-- Botão Mobile -->
+        <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="nav-list">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <!-- Lista de Navegação -->
+        <ul class="nav-list" id="nav-list" role="menubar">
+          <!-- Para Si -->
+          <li class="dropdown" role="none">
+            <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">
+              Para Si <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="index.html#voz" role="menuitem">Voz & SMS</a></li>
+              <li><a href="index.html#internet" role="menuitem">Internet</a></li>
+              <li><a href="index.html#roaming" role="menuitem">Roaming</a></li>
+              <li><a href="index.html#dispositivos" role="menuitem">Dispositivos</a></li>
+              <li><a href="index.html#vodapay" role="menuitem">VodaPay</a></li>
+            </ul>
+          </li>
+
+          <!-- Para Empresas -->
+          <li class="dropdown" role="none">
+            <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">
+              Para Empresas <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="index.html#conectividade" role="menuitem">Conectividade</a></li>
+              <li><a href="index.html#cloud" role="menuitem">Cloud</a></li>
+              <li><a href="index.html#seguranca" role="menuitem">Segurança</a></li>
+            </ul>
+          </li>
+
+          <!-- Links Diretos -->
+          <li><a href="tarifas.html" role="menuitem">Tarifas</a></li>
+          <li><a href="lojas.html" role="menuitem" class="active">Lojas & Cobertura</a></li>
+          <li><a href="suporte.html" role="menuitem">Suporte</a></li>
+          <li><a href="sobre.html" role="menuitem">Sobre Nós</a></li>
+        </ul>
+
+        <!-- Busca Global -->
+        <div class="search-box" role="search" aria-label="Busca no site">
+          <input type="text" id="global-search" placeholder="Buscar planos, serviços..." aria-label="Campo de busca">
+          <button id="search-btn" aria-label="Executar busca">
+            <i class="fas fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Botão Ativar SIM -->
+        <button id="ativar-sim" class="btn-primary">Ativar SIM</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================== -->
+  <!-- 2. MAIN (Conteúdo Principal)             -->
+  <!-- ======================================== -->
+  <main role="main">
+    <!-- Hero Banner -->
+    <section class="hero" style="background: linear-gradient(135deg, #FF6B00, #FF0000); color: white;">
+      <div class="container">
+        <h1>Encontre a Loja Mais Próxima</h1>
+        <p>Cobertura em 95% do território nacional. Mais de 200 lojas em Moçambique.</p>
+        <button class="btn-primary" onclick="Modal.open('Localizar Loja', 'Use o mapa ou a busca por cidade para encontrar a loja mais próxima.')">Localizar Agora</button>
+      </div>
+    </section>
+
+    <!-- Status da Rede -->
+    <section class="status-rede">
+      <div class="container">
+        <div class="status-card">
+          <h3><i class="fas fa-signal" style="color: #FF6B00;"></i> Status da Rede</h3>
+          <p id="status-text">Verificando cobertura...</p>
+          <span id="status-indicator" class="status-online">Online</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Busca por Cidade -->
+    <section class="section">
+      <div class="container">
+        <h2>Busca por Cidade</h2>
+        <p class="section-subtitle">Digite o nome da cidade para filtrar lojas próximas.</p>
+        <div class="search-filter">
+          <input type="text" id="cidade-search" placeholder="Digite a cidade (ex: Maputo, Beira, Nampula)" aria-label="Buscar cidade" />
+          <button onclick="filtrarLojas()" class="btn-primary"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mapa + Lista de Lojas -->
+    <section class="section">
+      <div class="container">
+        <h2>Mapa e Lista de Lojas</h2>
+        <p class="section-subtitle">Visualize todas as lojas e cobertura em tempo real.</p>
+        <div class="grid" id="lojas-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <!-- Mapa Interativo -->
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11475.123456789!2d32.574!3d-25.966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDU15yc0MCIgUyAzMsKwMzQnMjIuNCJF!5e0!3m2!1spt!2smz!4v1699270000000" 
+              width="100%" height="400" style="border:0; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);" 
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+
+          <!-- Lista de Lojas (Carregada via JS) -->
+          <div id="lojas-list">
+            <!-- Cards serão inseridos pelo JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cobertura Nacional -->
+    <section class="section" style="background: #f8f9fa;">
+      <div class="container">
+        <h2>Cobertura Nacional</h2>
+        <p class="section-subtitle">95% da população coberta com 4G/5G. Verifique a qualidade do sinal na sua região.</p>
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800" alt="Mapa de Cobertura Vodacom Moçambique" style="border-radius: 16px; margin: 2rem auto; display: block; box-shadow: 0 8px 25px rgba(0,0,0,0.1);" />
+        <button class="btn-primary" onclick="Modal.open('Cobertura Detalhada', 'A Vodacom cobre 95% do território nacional com 4G e 5G. Para detalhes específicos da sua região, use o mapa interativo acima ou entre em contato com suporte.')">Ver Detalhes</button>
+      </div>
+    </section>
+
+    <!-- FAQ para Lojas -->
+    <section class="faq-section">
+      <div class="container">
+        <h2>Perguntas Frequentes sobre Lojas</h2>
+        <p class="section-subtitle">Encontre respostas rápidas sobre horários, serviços e localização.</p>
+        <div class="faq-search">
+          <input type="text" id="faq-search" placeholder="Buscar na FAQ (ex: horários, Maputo)..." aria-label="Buscar FAQ">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </div>
+        <div id="faq-list">
+          <!-- FAQs carregadas via JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================== -->
+  <!-- 6. FOOTER                                -->
+  <!-- ======================================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Coluna 1 -->
+        <div class="footer-col">
+          <h4>Vodacom</h4>
+          <p>© Vodacom 2025. Líder em telecomunicações.</p>
+        </div>
+
+        <!-- Coluna 2 -->
+        <div class="footer-col">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="tarifas.html">Tarifas</a></li>
+            <li><a href="suporte.html">Suporte</a></li>
+            <li><a href="lojas.html">Lojas & Cobertura</a></li>
+            <li><a href="sobre.html">Sobre Nós</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3 -->
+        <div class="footer-col">
+          <h4>Contato</h4>
+          <p>Call Center: <strong>1111</strong></p>
+          <p>Email: <a href="mailto:apoio@vm.co.mz">apoio@vm.co.mz</a></p>
+        </div>
+
+        <!-- Coluna 4 -->
+        <div class="footer-col social">
+          <h4>Redes Sociais</h4>
+          <ul>
+            <li>
+              <a href="https://facebook.com/vodacom.mz" aria-label="Vodacom no Facebook">
+                <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
+              </a>
+            </li>
+            <li>
+              <a href="https://instagram.com/vodacom.mz" aria-label="Vodacom no Instagram">
+                <i class="fab fa-instagram" aria-hidden="true"></i> Instagram
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Vodacom Moçambique. Todos os direitos reservados.</p>
+        <p><small>Mapa do site: <a href="index.html">Início</a> → <a href="tarifas.html">Tarifas</a> → <a href="suporte.html">Suporte</a> → <a href="lojas.html">Lojas</a> → <a href="sobre.html">Sobre</a></small></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================== -->
+  <!-- 7. MODAL GENÉRICO                        -->
+  <!-- ======================================== -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <button class="close" aria-label="Fechar modal">&times;</button>
+      <h3 id="modal-title"></h3>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <!-- ======================================== -->
+  <!-- 8. TOAST NOTIFICAÇÕES                     -->
+  <!-- ======================================== -->
+  <div id="toast"></div>
+
+  <!-- ======================================== -->
+  <!-- 9. CHAT FLUTUANTE (Suporte)               -->
+  <!-- ======================================== -->
+  <button class="chat-fab" aria-label="Abrir chat de suporte">
+    <i class="fas fa-comment-dots"></i>
+  </button>
+
+  <div id="chat-modal" class="chat-modal" style="display: none;">
+    <div class="chat-header">
+      <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="Atendente Vodacom" class="agent-img" />
+      <div>
+        <h4>Suporte Vodacom</h4>
+        <p>Online • Responde em <1min</p>
+      </div>
+      <button class="close" aria-label="Fechar chat">&times;</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <div class="message bot">Olá! Como posso ajudar você hoje?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="Digite sua mensagem..." aria-label="Mensagem do chat" />
+      <button aria-label="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js" defer></script>
+  <script>
+    // Função Local para Filtro de Lojas
+    function filtrarLojas() {
+      const input = document.getElementById('cidade-search').value.toLowerCase();
+      const lojas = document.querySelectorAll('.loja-card');
+      let visibleCount = 0;
+      lojas.forEach(loja => {
+        const texto = loja.textContent.toLowerCase();
+        if (texto.includes(input)) {
+          loja.style.display = 'block';
+          visibleCount++;
+        } else {
+          loja.style.display = 'none';
+        }
+      });
+      if (input) {
+        showToast(`${visibleCount} loja(s) encontrada(s) em "${input}"`, 'success');
+      } else {
+        showToast('Mostrando todas as lojas.', 'info');
+      }
+    }
+
+    // Ativar Filtro em Tempo Real
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('cidade-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', filtrarLojas);
+      }
+    });
+
+    // Dados de Lojas (para JS)
+    const LOJAS_DATA = [
+      {
+        id: 1,
+        nome: 'Vodacom Maputo Central',
+        endereco: 'Av. 24 de Julho, 1234, Maputo',
+        horario: 'Seg-Sex: 8h-18h | Sáb: 9h-14h',
+        telefone: '84 111 2222',
+        cidade: 'Maputo'
+      },
+      {
+        id: 2,
+        nome: 'Vodacom Beira',
+        endereco: 'Rua Principal, Centro, Beira',
+        horario: 'Seg-Sex: 8h-17h | Sáb: 9h-13h',
+        telefone: '82 333 4444',
+        cidade: 'Beira'
+      },
+      {
+        id: 3,
+        nome: 'Vodacom Nampula',
+        endereco: 'Av. Eduardo Mondlane, Nampula',
+        horario: 'Seg-Sex: 8h-18h',
+        telefone: '84 555 6666',
+        cidade: 'Nampula'
+      },
+      {
+        id: 4,
+        nome: 'Vodacom Quelimane',
+        endereco: 'Centro da Cidade, Quelimane',
+        horario: 'Seg-Sex: 8h-17h',
+        telefone: '82 777 8888',
+        cidade: 'Quelimane'
+      }
+    ];
+
+    // Renderizar Lojas
+    document.addEventListener('DOMContentLoaded', () => {
+      const lojasList = document.getElementById('lojas-list');
+      if (lojasList) {
+        lojasList.innerHTML = LOJAS_DATA.map(loja => `
+          <div class="loja-card" data-cidade="${loja.cidade.toLowerCase()}">
+            <h3>${loja.nome}</h3>
+            <p><i class="fas fa-map-marker-alt" style="color: #FF6B00;"></i> ${loja.endereco}</p>
+            <p><i class="fas fa-clock" style="color: #FF6B00;"></i> ${loja.horario}</p>
+            <p><i class="fas fa-phone" style="color: #FF6B00;"></i> ${loja.telefone}</p>
+            <button class="btn-primary" onclick="Modal.open('Loja ${loja.nome}', 'Endereço: ${loja.endereco}<br>Horário: ${loja.horario}<br>Telefone: ${loja.telefone}')">Ver Detalhes</button>
+          </div>
+        `).join('');
+        filtrarLojas(); // Inicializar filtro
+      }
+    });
+  </script>
+</body>
+</html>

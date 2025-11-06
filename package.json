@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "name": "vodacom-redesenhado",
+  "version": "1.0.0",
+  "description": "README.md - Redesenho do Website da Vodacom Moçambique\r 📋 Visão Geral do Projeto\r Este projeto é um redesenho completo e funcional do website oficial da Vodacom Moçambique, desenvolvido para a disciplina Tecnologias Web. O foco é melhorar a usabilidade, navegação, design e experiência do usuário (UX), corrigindo limitações do site original, como falta de responsividade, busca estática e interatividade limitada.\r Objetivo: Criar uma versão mobile-first, acessível e interativa, utilizando HTML5, CSS3 e JavaScript ES6, com funcionalidades como busca dinâmica, favoritos (localStorage), ordenação, FAQ, chat, modais e status de rede.\r Data de Criação: Novembro 2025",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

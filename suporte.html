@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suporte | Vodacom Moçambique</title>
+  <meta name="description" content="Suporte técnico, FAQ, chat ao vivo e contato com a Vodacom Moçambique.">
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="https://www.vm.co.mz/wp-content/themes/vodacom/assets/img/logo-vodacom.svg" alt="Vodacom Moçambique" />
+      </a>
+      <nav class="nav" aria-label="Menu principal">
+        <button class="menu-toggle" aria-label="Abrir menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-list">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="tarifas.html">Tarifas</a></li>
+          <li><a href="suporte.html" class="active">Suporte</a></li>
+          <li><a href="lojas.html">Lojas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Suporte -->
+  <section class="suporte-hero">
+    <div class="container">
+      <h1>Precisa de Ajuda?</h1>
+      <p>Estamos aqui 24/7 para resolver suas dúvidas.</p>
+      <div class="quick-actions">
+        <button class="btn-primary" onclick="openChat()">
+          <i class="fas fa-comment-dots"></i> Chat ao Vivo
+        </button>
+        <button class="btn-secondary" onclick="scrollToFAQ()">
+          <i class="fas fa-question-circle"></i> Perguntas Frequentes
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Status da Rede -->
+  <section class="status-rede">
+    <div class="container">
+      <div class="status-card">
+        <h3><i class="fas fa-signal"></i> Status da Rede</h3>
+        <p id="status-text">Verificando rede...</p>
+        <span id="status-indicator" class="status-online">Online</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ com Busca -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <h2>Perguntas Frequentes</h2>
+      <div class="faq-search">
+        <input type="text" id="faq-search" placeholder="Buscar na FAQ..." aria-label="Buscar pergunta" />
+        <i class="fas fa-search"></i>
+      </div>
+      <div id="faq-list">
+        <!-- FAQs carregadas via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulário de Contato -->
+  <section class="contact-form-section">
+    <div class="container">
+      <h2>Envie sua Dúvida</h2>
+      <form id="contact-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nome">Nome Completo *</label>
+            <input type="text" id="nome" required />
+            <span class="error"></span>
+          </div>
+          <div class="form-group">
+            <label for="telefone">Telefone *</label>
+            <input type="tel" id="telefone" required pattern="[0-9]{9}" />
+            <span class="error"></span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" />
+            <span class="error"></span>
+          </div>
+          <div class="form-group full">
+            <label for="assunto">Assunto *</label>
+            <select id="assunto" required>
+              <option value="">Selecione...</option>
+              <option value="recarga">Problema com Recarga</option>
+              <option value="internet">Internet Lenta</option>
+              <option value="voz">Chamadas com Ruído</option>
+              <option value="outro">Outro</option>
+            </select>
+            <span class="error"></span>
+          </div>
+          <div class="form-group full">
+            <label for="mensagem">Mensagemagem *</label>
+            <textarea id="mensagem" rows="5" required></textarea>
+            <span class="error"></span>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">
+          <i class="fas fa-paper-plane"></i> Enviar Mensagem
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Chat Flutuante -->
+  <button class="chat-fab" onclick="openChat()" aria-label="Abrir chat">
+    <i class="fas fa-comment-alt"></i>
+  </button>
+
+  <!-- Modal Chat -->
+  <div id="chat-modal" class="modal">
+    <div class="modal-content chat-modal">
+      <div class="chat-header">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93579e4675?w=40" alt="Atendente" class="agent-img" />
+        <div>
+          <h4>Atendente Vodacom</h4>
+          <p>Online • Responde em < 1 min</p>
+        </div>
+        <span class="close" onclick="closeChat()">&times;</span>
+      </div>
+      <div class="chat-body" id="chat-body">
+        <div class="message bot">Olá! Como posso ajudar hoje?</div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Digite sua mensagem..." />
+        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Vodacom Moçambique | Projeto Acadêmico - Redesenho Profissional</p>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script>
+    // FAQs Reais da Vodacom
+    const faqs = [
+      { pergunta: "Como recarregar saldo?", resposta: "Marque *150# e siga as instruções. Ou use o app VodaPay." },
+      { pergunta: "Como ativar um pacote de internet?", resposta: "Disque *151# → selecione Dados → escolha o pacote." },
+      { pergunta: "Qual é o código para verificar saldo?", resposta: "Marque *100#." },
+      { pergunta: "Como falar com um atendente?", resposta: "Ligue 1111 (pré-pago) ou 84111 (pós-pago)." },
+      { pergunta: "Como configurar internet no celular?", resposta: "Envie SMS com 'NET' para 12345." },
+      { pergunta: "O que fazer se o sinal estiver fraco?", resposta: "Reinicie o celular ou mude de local. Verifique cobertura em Lojas & Cobertura." },
+      { pergunta: "Como bloquear chamadas indesejadas?", resposta: "Marque *35*0000# para ativar bloqueio." },
+      { pergunta: "Como transferir saldo?", resposta: "Use *150*numero*valor#." }
+    ];
+
+    // Render FAQ
+    function renderFAQs(filter = '') {
+      const list = $('#faq-list');
+      const filtered = faqs.filter(f => 
+        f.pergunta.toLowerCase().includes(filter) || 
+        f.resposta.toLowerCase().includes(filter)
+      );
+      list.innerHTML = filtered.map((f, i) => `
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+            <span>${f.pergunta}</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">${f.resposta}</div>
+        </div>
+      `).join('');
+    }
+
+    function toggleFAQ(btn) {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      btn.nextElementSibling.style.maxHeight = expanded ? '0' : btn.nextElementSibling.scrollHeight + 'px';
+    }
+
+    // Busca FAQ
+    $('#faq-search').addEventListener('input', (e) => {
+      renderFAQs(e.target.value.toLowerCase());
+    });
+
+    // Status da Rede (Atualiza a cada 30s)
+    function updateNetworkStatus() {
+      const status = Math.random() > 0.1 ? 'online' : 'degraded';
+      $('#status-text').textContent = status === 'online' 
+        ? 'Rede 100% operacional em todo Moçambique' 
+        : 'Algumas áreas com instabilidade. Estamos resolvendo.';
+      $('#status-indicator').className = `status-${status}`;
+      $('#status-indicator').textContent = status === 'online' ? 'Online' : 'Degradado';
+    }
+    setInterval(updateNetworkStatus, 30000);
+    updateNetworkStatus();
+
+    // Formulário
+    $('#contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+      const fields = ['nome', 'telefone', 'assunto', 'mensagem'];
+      fields.forEach(id => {
+        const field = $(`#${id}`);
+        const error = field.parentElement.querySelector('.error');
+        if (!field.value.trim() || (id === 'telefone' && !/^\d{9}$/.test(field.value))) {
+          error.textContent = 'Campo obrigatório ou inválido';
+          valid = false;
+        } else {
+          error.textContent = '';
+        }
+      });
+      if (valid) {
+        showToast('Mensagem enviada com sucesso! Responderemos em até 24h.', 'success');
+        e.target.reset();
+      }
+    });
+
+    // Chat
+    function openChat() {
+      $('#chat-modal').style.display = 'block';
+      $('#chat-input').focus();
+    }
+    function closeChat() {
+      $('#chat-modal').style.display = 'none';
+    }
+    function sendMessage() {
+      const input = $('#chat-input');
+      if (!input.value.trim()) return;
+      const body = $('#chat-body');
+      body.innerHTML += `<div class="message user">${input.value}</div>`;
+      setTimeout(() => {
+        body.innerHTML += `<div class="message bot">Obrigado! Um atendente irá responder em breve.</div>`;
+        body.scrollTop = body.scrollHeight;
+      }, 1000);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+    }
+    $('#chat-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    // Scroll suave
+    function scrollToFAQ() {
+      document.querySelector('#faq').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFAQs();
+    });
+  </script>
+</body>
+</html>
